@@ -10,12 +10,13 @@ services:
       - key: PYTHON_VERSION
         value: 3.9.0
 
-staticSites:
   # FRONTEND STATIC SITE
-  - name: transport-frontend
+  - type: web
+    name: transport-frontend
+    env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    publishDir: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
         fromService:
