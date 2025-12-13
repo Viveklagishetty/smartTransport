@@ -8,56 +8,47 @@ This guide explains how to deploy your **Smart Transport** project for free usin
 
 ---
 
-## Part 1: Deploy the Backend (Web Service)
+# Deployment Guide (Render.com)
 
-1.  Click **New +** and select **Web Service**.
-2.  Connect your GitHub repository (`smartTransport`).
-3.  **Name**: `transport-backend` (or similar).
-4.  **Region**: Choose one close to you (e.g., Singapore, Frankfurt).
-5.  **Branch**: `main`.
-6.  **Root Directory**: `backend` (Important!).
-7.  **Runtime**: `Python 3`.
-8.  **Build Command**: `pip install -r requirements.txt`.
-9.  **Start Command**: `uvicorn app.main:app --host 0.0.0.0 --port 10000`.
-10. **Free Instance**: Select the Free plan.
-11. **Environment Variables**:
-    *   Scroll down to "Environment Variables" and add:
-        *   `PYTHON_VERSION`: `3.9.0` (Recommended)
-        *   `DATABASE_URL`: (Optional) If you want to use a real database, create a PostgreSQL database on Render and paste the internal connection string here. If left blank, it will use SQLite (data will generally be lost on restart).
-12. Click **Create Web Service**.
+This guide explains how to deploy your **Smart Transport** project for free using [Render](https://render.com) and the **Blueprint** feature (Infrastructure as Code).
 
-**Wait for it to deploy.** Once finished, copy the **Backend URL** (e.g., `https://transport-backend.onrender.com`).
+## Prerequisites
+1.  Push your latest code to GitHub (including `render.yaml`).
+2.  Sign up for a free account on [Render.com](https://render.com).
 
 ---
 
-## Part 2: Deploy the Frontend (Static Site)
+## 🚀 One-Click Deployment (Recommended)
 
-1.  Go to Dashboard, click **New +** and select **Static Site**.
-2.  Connect the same GitHub repository.
-3.  **Name**: `transport-frontend`.
-4.  **Root Directory**: `frontend`.
-5.  **Build Command**: `npm install && npm run build`.
-6.  **Publish Directory**: `dist`.
-7.  **Environment Variables**:
-    *   Add a variable named `VITE_API_URL`.
-    *   Value: Paste your **Backend URL** from Part 1 (No trailing slash, e.g., `https://transport-backend.onrender.com`).
-8.  Click **Create Static Site**.
+1.  Go to your **[Render Dashboard](https://dashboard.render.com/)**.
+2.  Click **New +** and select **Blueprint**.
+3.  Connect your GitHub repository (`smartTransport`).
+4.  **Service Name**: You can leave it as default or change it if you like.
+5.  **Click Apply**.
+
+Render will automatically:
+1.  Read the `render.yaml` file.
+2.  Create the **Backend** service.
+3.  Create the **Frontend** static site.
+4.  **Magically link them**: It will inject the Backend's URL into the Frontend's build configuration automatically.
 
 ---
 
-## Part 3: Final Configuration
+## ⚠️ Important Post-Deployment Check
 
-1.  **Rewrite Rules (Frontend)**:
-    *   Go to your **Frontend** service settings -> **Redirects/Rewrites**.
-    *   Add a rule:
-        *   **Source**: `/*`
-        *   **Destination**: `/index.html`
-        *   **Action**: `Rewrite`
-    *   Save changes. This ensures that refreshing a page like `/login` doesn't give a 404 error.
+Once the deployment finishes (green checkmarks):
 
-2.  **CORS (Backend)**:
-    *   Currently, the backend allows all origins (`*`). This is fine for testing.
-    *   For better security, you can update `backend/app/main.py` locally to only allow your Frontend URL, committed, and push.
+1.  Click the **Frontend URL** (e.g., `https://transport-frontend.onrender.com`).
+2.  Try to **Login** or **Sign Up**.
+3.  If successful, the connection is working perfectly!
 
-## 🎉 Done!
-Open your **Frontend URL**. Your app should be live and connected to the backend.
+## 🔧 Troubleshooting
+
+-   **"Login Failed"**: 
+    -   Check the **Backend** logs in the Render dashboard to see if there are any errors.
+    -   Ensure the **Backend** service status is "Live".
+    -   Wait a minute; sometimes the free instance takes a moment to wake up ("Cold Start").
+
+-   **Database**:
+    -   By default, this uses a local SQLite database file. **Data will be reset every time the backend redeploys.**
+    -   For persistent data, you should create a **PostgreSQL** database on Render and add the `DATABASE_URL` environment variable to the backend service.
