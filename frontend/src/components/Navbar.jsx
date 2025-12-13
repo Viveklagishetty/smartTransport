@@ -32,7 +32,7 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center space-x-4">
                         {user ? (
                             <>
-                                <span className="text-gray-700 font-medium">Hello, {user.full_name || user.email}</span>
+                                <span className="text-gray-700 font-medium">Hello</span>
                                 {user.role === 'owner' && <Link to="/owner" className="text-gray-600 hover:text-blue-600">Dashboard</Link>}
                                 {user.role === 'customer' && <Link to="/customer" className="text-gray-600 hover:text-blue-600">Search</Link>}
                                 {user.role === 'admin' && <Link to="/admin" className="text-gray-600 hover:text-blue-600">Admin</Link>}
@@ -77,7 +77,7 @@ export default function Navbar() {
                         {user ? (
                             <>
                                 <div className="px-3 py-2 text-gray-700 font-medium border-b border-gray-100">
-                                    Hello, {user.full_name || user.email}
+                                    Hello
                                 </div>
                                 {user.role === 'owner' && (
                                     <Link
