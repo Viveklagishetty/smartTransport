@@ -22,7 +22,7 @@ services:
         fromService:
           type: web
           name: transport-backend
-          property: url
+          property: host
     routes:
       - type: rewrite
         source: /*
