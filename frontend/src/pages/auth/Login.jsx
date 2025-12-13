@@ -15,9 +15,19 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login(email, password);
+            const userData = await login(email, password);
             toast.success('Login successful!');
-            navigate('/');
+
+            // Redirect based on user role
+            if (userData.role === 'admin') {
+                navigate('/admin');
+            } else if (userData.role === 'owner') {
+                navigate('/owner');
+            } else if (userData.role === 'customer') {
+                navigate('/customer');
+            } else {
+                navigate('/');
+            }
         } catch (error) {
             toast.error('Login failed. Please check credentials.');
         }
