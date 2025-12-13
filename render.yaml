@@ -20,10 +20,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: transport-backend
-          property: url
+        value: https://transport-backend.onrender.com
     routes:
       - type: rewrite
         source: /*
