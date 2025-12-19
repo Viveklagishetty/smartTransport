@@ -31,6 +31,17 @@ app.include_router(notifications.router)
 def on_startup():
     from .core.database import create_db_and_tables
     create_db_and_tables()
+    
+    # Auto-create default admin on startup for deployment convenience
+    try:
+        from create_admin import create_admin_user
+        create_admin_user("admin@example.com", "admin123", "System Admin")
+        print("Default admin verified/created.")
+    except ImportError:
+        # Fallback if the script isn't in the path (though it should be in rootDir)
+        pass
+    except Exception as e:
+        print(f"Error creating default admin: {e}")
 
 @app.get("/")
 def read_root():
