@@ -1,0 +1,27 @@
+services:
+  # BACKEND SERVICE
+  - type: web
+    name: transport-backend
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+
+  # FRONTEND STATIC SITE
+  - type: web
+    name: transport-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: hhttps://transport-backend-v4bs.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
