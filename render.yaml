@@ -10,18 +10,3 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.0
-
-  # FRONTEND STATIC SITE
-  - type: web
-    name: transport-frontend
-    env: static
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_URL
-        value: ${transport_backend.url}
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
